@@ -75,4 +75,15 @@ WHERE sightings.sighting_id is NULL;
 SELECT sighting_time FROM sightings ORDER BY sighting_time DESC LIMIT 2;
 
 --Problem 7
-SELECT * FROM species WHERE DATE(discovery_date)<'1800-01-01 ' UPDATE discovery_date='Historic' ;
+UPDATE species SET conservation_status='Historic' WHERE DATE(discovery_date)<'1800-01-01 ';
+
+--Problem 8 
+ALTER TABLE sightings
+ADD COLUMN  time_of_day VARCHAR(50);
+SELECT *,extract(HOUR from sighting_time)as "hour" FROM sightings;
+
+UPDATE sightings SET time_of_day=Case 
+   WHEN extract(HOUR FROM sighting_time) <12 THEN 'Morning'
+   WHEN extract(HOUR FROM sighting_time) >=12 AND extract(HOUR FROM sighting_time) <=17 THEN 'Afternoon'
+   ELSE 'Evening'
+   END;
